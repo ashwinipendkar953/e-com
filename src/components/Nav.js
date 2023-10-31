@@ -13,10 +13,10 @@ const Nav = () => {
           </NavLink>
         </p>
         <p className="nav-description">
-          <NavLink to="/cart" className="link checkout summary">
-            <ShoppingCartIcon className="mr" />
+          <NavLink to="/cart" className="link checkout summary flex-center">
+            <ShoppingCartIcon className="mr " />
+            <span className="total-price">$2.00</span>
           </NavLink>
-          <span className="total-price">$2.00</span>
         </p>
       </FlexContainer>
     </Navbar>
