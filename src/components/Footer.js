@@ -2,9 +2,11 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="footer-container pt-10 flex-center">
-      <div className=" large">© E-commerce Store</div>
-    </footer>
+    <div>
+      <footer className="footer-container pt-10 mt-30 flex-center">
+        <div className=" large">© E-commerce Store</div>
+      </footer>
+    </div>
   );
 };
 

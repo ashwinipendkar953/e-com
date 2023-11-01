@@ -8,12 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import categories from "../assets/categories.json";
 import { Link } from "react-router-dom";
+import { useCategoryContext } from "../context/CategoryContext";
 
 // console.log(categories);
 
 const Home = () => {
+  const { categories } = useCategoryContext();
   return (
     <div className="container flex-container mt-50">
       <Box>
@@ -30,7 +31,7 @@ const Home = () => {
                   </Typography>
                 </CardContent>
                 <CardActions className="mt-50">
-                  <Link to={`/category-page/${data.id}`}>
+                  <Link to={`/category-page/${data.name}/${data.id}`}>
                     <Button size="small">View Products</Button>
                   </Link>
                 </CardActions>

@@ -5,7 +5,6 @@
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
 }
 
 .container {
@@ -31,8 +30,22 @@ body {
   margin-top: 50px;
 }
 
+.mt-30 {
+  margin-top: 30px;
+}
+
 .pt-10 {
   padding-top: 10px;
+}
+
+.px-50 {
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+.center {
+  width: 100%;
+  margin: auto;
 }
 
 .text-center {
@@ -58,5 +71,6 @@ body {
   height: 80px;
   border-top: 1px solid #eaeaea;
   position: fixed;
+  left: 0;
   bottom: 0;
 }
