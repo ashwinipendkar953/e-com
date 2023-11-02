@@ -39,6 +39,18 @@ export const ProductProvider = ({ children }) => {
       filteredProducts = expensiveProduct;
     }
 
+    if (selectedFilters.includes("bestSelling")) {
+      let bestSellingProduct = null;
+      let highestUnitSold = 0;
+      filteredProducts.forEach((product) => {
+        if (product.unitsSold > highestUnitSold) {
+          bestSellingProduct = product;
+          highestUnitSold = product.unitsSold;
+        }
+      });
+      filteredProducts = [bestSellingProduct];
+    }
+
     return filteredProducts;
   };
 

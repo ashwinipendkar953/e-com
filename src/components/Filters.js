@@ -21,7 +21,7 @@ const Filters = () => {
             Delivery
           </label>
         </div>
-        <div>
+        <div className="pt-10">
           <label>
             <input
               type="checkbox"
@@ -30,6 +30,17 @@ const Filters = () => {
               onChange={() => checkboxChangeHandler("expensive")}
             />
             Expensive
+          </label>
+        </div>
+        <div className="pt-10">
+          <label>
+            <input
+              type="checkbox"
+              value="bestSelling"
+              checked={selectedFilters.includes("bestSelling")}
+              onChange={() => checkboxChangeHandler("bestSelling")}
+            />
+            Best Selling
           </label>
         </div>
       </div>
