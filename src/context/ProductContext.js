@@ -15,6 +15,16 @@ export const ProductProvider = ({ children }) => {
 
   useEffect(() => {
     setProducts(productsData);
+
+    const storedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    if (storedCartItems) {
+      setCartItems(storedCartItems);
+    }
+
+    const storedCartPrice = JSON.parse(localStorage.getItem("cartPrice"));
+    if (storedCartPrice) {
+      setPrice(storedCartPrice);
+    }
   }, []);
 
   const getDisplayProducts = (catId) => {
@@ -78,7 +88,15 @@ export const ProductProvider = ({ children }) => {
     setPrice((prev) => {
       return prev + cartProduct.price;
     });
-    console.log(cartItems);
+
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify([...cartItems, cartProduct])
+    );
+    localStorage.setItem(
+      "cartPrice",
+      JSON.stringify(price + cartProduct.price)
+    );
   };
 
   return (
