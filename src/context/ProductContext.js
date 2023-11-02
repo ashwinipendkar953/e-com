@@ -10,6 +10,8 @@ export const useProductContext = () => {
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState(productsData);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     setProducts(productsData);
@@ -71,6 +73,14 @@ export const ProductProvider = ({ children }) => {
     setSelectedFilters([]);
   };
 
+  const addToCartHandler = (cartProduct) => {
+    setCartItems([...cartItems, cartProduct]);
+    setPrice((prev) => {
+      return prev + cartProduct.price;
+    });
+    console.log(cartItems);
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -80,6 +90,10 @@ export const ProductProvider = ({ children }) => {
         checkboxChangeHandler,
         clearFilters,
         selectedFilters,
+        cartItems,
+        setCartItems,
+        addToCartHandler,
+        price,
       }}
     >
       {children}

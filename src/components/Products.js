@@ -8,10 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useProductContext } from "../context/ProductContext";
-import { Link } from "react-router-dom";
 
 const Products = ({ catId }) => {
-  const { getDisplayProducts } = useProductContext();
+  const { getDisplayProducts, addToCartHandler } = useProductContext();
   const displayProducts = getDisplayProducts(catId);
 
   return (
@@ -23,7 +22,7 @@ const Products = ({ catId }) => {
             if (!product) return <div>No products found</div>;
             const { id, name, thumbnail, price, inStock } = product;
             return (
-              <Grid item xs={12} md={4} key={id}>
+              <Grid item md={4} key={id}>
                 <Card>
                   <CardMedia
                     component="img"
@@ -52,16 +51,16 @@ const Products = ({ catId }) => {
                     >
                       {inStock ? <div>In stock</div> : <div>Out of stock</div>}
                     </Typography>
-                    <Link to={inStock ? "/cart" : ""}>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        className="center pt-10"
-                        disabled={!inStock}
-                      >
-                        Add to cart
-                      </Button>
-                    </Link>
+
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      className="center pt-10"
+                      disabled={!inStock}
+                      onClick={() => inStock && addToCartHandler(product)}
+                    >
+                      Add to cart
+                    </Button>
                   </CardContent>
                 </Card>
               </Grid>

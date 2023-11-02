@@ -10,7 +10,7 @@ const CategoryPage = () => {
   return (
     <StyledContainer className="container-fluid flex-container  px-50">
       <StyledBox className="filters-products-container">
-        <Grid item xs={12} md={3} className="filters ">
+        <Grid item xs={12} md={4} className="filters ">
           <Filters />
         </Grid>
 
@@ -26,7 +26,7 @@ const CategoryPage = () => {
 export default CategoryPage;
 
 const StyledContainer = styled.div`
-  height: 60vh;
+  height: 70vh;
 `;
 
 const StyledBox = styled(Box)`

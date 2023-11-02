@@ -1,9 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "@emotion/styled";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Button } from "@mui/material";
+import { useProductContext } from "../context/ProductContext";
 
 const Nav = () => {
+  const { cartItems, price } = useProductContext();
   return (
     <Navbar>
       <FlexContainer className="container">
@@ -13,9 +15,11 @@ const Nav = () => {
           </NavLink>
         </p>
         <p className="nav-description">
-          <NavLink to="/cart" className="link checkout summary flex-center">
-            <ShoppingCartIcon className="mr " />
-            <span className="total-price">$2.00</span>
+          <NavLink to="/checkout" className="link checkout summary flex-center">
+            <Button className="cartItems" color="secondary" variant="contained">
+              {cartItems.length}
+            </Button>
+            <span className="total-price">${price}</span>
           </NavLink>
         </p>
       </FlexContainer>
@@ -44,5 +48,13 @@ const FlexContainer = styled.div`
     margin: 0;
     font-size: 1.5rem;
     line-height: 1.5;
+  }
+
+  .cartItems {
+    border-radius: 50%;
+    height: 40px;
+    width: 10px !important;
+    margin-right: 10px;
+    font-size: 20px;
   }
 `;
