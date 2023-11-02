@@ -18,7 +18,9 @@ const Products = ({ catId }) => {
     <div className="container flex-container mt-30">
       <Box>
         <Grid container spacing={2}>
+          {displayProducts.length === 0 && <div>No products found</div>}{" "}
           {displayProducts.map((product) => {
+            if (!product) return <div>No products found</div>;
             const { id, name, thumbnail, price, inStock } = product;
             return (
               <Grid item xs={12} md={4} key={id}>
@@ -50,11 +52,12 @@ const Products = ({ catId }) => {
                     >
                       {inStock ? <div>In stock</div> : <div>Out of stock</div>}
                     </Typography>
-                    <Link to="/cart">
+                    <Link to={inStock ? "/cart" : ""}>
                       <Button
                         variant="contained"
                         color="secondary"
                         className="center pt-10"
+                        disabled={!inStock}
                       >
                         Add to cart
                       </Button>

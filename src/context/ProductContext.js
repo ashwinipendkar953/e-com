@@ -30,10 +30,11 @@ export const ProductProvider = ({ children }) => {
       let expensiveProduct = [];
       let maxPrice = 0;
 
-      for (let i = 0; i < products.length; i++) {
-        if (products[i].price > maxPrice) {
-          maxPrice = products[i].price;
-          expensiveProduct = [products[i]];
+      for (let i = 0; i < filteredProducts.length; i++) {
+        const product = filteredProducts[i];
+        if (product && product.price > maxPrice) {
+          maxPrice = product.price;
+          expensiveProduct = [product];
         }
       }
       filteredProducts = expensiveProduct;
@@ -43,7 +44,7 @@ export const ProductProvider = ({ children }) => {
       let bestSellingProduct = null;
       let highestUnitSold = 0;
       filteredProducts.forEach((product) => {
-        if (product.unitsSold > highestUnitSold) {
+        if (product && product.unitsSold > highestUnitSold) {
           bestSellingProduct = product;
           highestUnitSold = product.unitsSold;
         }
