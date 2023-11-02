@@ -28,7 +28,6 @@ const Products = ({ catId }) => {
               inStock,
               categoryId,
             } = product;
-            console.log(catId, categoryId);
             return (
               <Grid item xs={12} md={4} key={id}>
                 <Card>

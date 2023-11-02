@@ -1,51 +1,43 @@
-import { CheckBox } from "@mui/icons-material";
-import { FormControl, FormControlLabel, FormGroup } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import { useProductContext } from "../context/ProductContext";
+import { Button } from "@mui/material";
 
 const Filters = () => {
-  const handleCheckbox = () => {};
+  const { checkboxChangeHandler, clearFilters } = useProductContext();
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+    checkboxChangeHandler(!isChecked);
+  };
+
   return (
     <div>
       <h2>Filters</h2>
+      <div>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              value="delivery"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+            Delivery
+          </label>
+        </div>
+      </div>
 
-      <FormControl>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <CheckBox
-                checked
-                onChange={handleCheckbox}
-                name="delivery"
-                className="mr"
-              />
-            }
-            label="Delivery"
-          />
-
-          <FormControlLabel
-            control={
-              <CheckBox
-                checked
-                onChange={handleCheckbox}
-                name="expensive"
-                className="mr"
-              />
-            }
-            label="Expensive"
-          />
-          <FormControlLabel
-            control={
-              <CheckBox
-                checked
-                onChange={handleCheckbox}
-                name="bestSelling"
-                className="mr"
-              />
-            }
-            label="Best-selling"
-          />
-        </FormGroup>
-      </FormControl>
+      <div className="mt-30">
+        <Button
+          onClick={clearFilters}
+          color="secondary"
+          className="center"
+          variant="contained"
+        >
+          Clear
+        </Button>
+      </div>
     </div>
   );
 };

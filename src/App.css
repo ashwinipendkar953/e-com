@@ -71,6 +71,7 @@ body {
   height: 80px;
   border-top: 1px solid #eaeaea;
   position: fixed;
-  left: 0;
   bottom: 0;
+  left: 0;
+  right: 0;
 }
