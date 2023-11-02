@@ -1,15 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useProductContext } from "../context/ProductContext";
 import { Button } from "@mui/material";
 
 const Filters = () => {
-  const { checkboxChangeHandler, clearFilters } = useProductContext();
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-    checkboxChangeHandler(!isChecked);
-  };
+  const { checkboxChangeHandler, clearFilters, selectedFilters } =
+    useProductContext();
 
   return (
     <div>
@@ -20,10 +15,21 @@ const Filters = () => {
             <input
               type="checkbox"
               value="delivery"
-              checked={isChecked}
-              onChange={handleCheckboxChange}
+              checked={selectedFilters.includes("delivery")}
+              onChange={() => checkboxChangeHandler("delivery")}
             />
             Delivery
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              value="expensive"
+              checked={selectedFilters.includes("expensive")}
+              onChange={() => checkboxChangeHandler("expensive")}
+            />
+            Expensive
           </label>
         </div>
       </div>

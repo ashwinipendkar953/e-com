@@ -9,27 +9,53 @@ export const useProductContext = () => {
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState(productsData);
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   useEffect(() => {
-    setProducts(products);
-  }, [products]);
+    setProducts(productsData);
+  }, []);
 
   const getDisplayProducts = (catId) => {
-    return products.filter((product) => product.categoryId === catId);
-  };
+    let filteredProducts = products.filter(
+      (product) => product.categoryId === catId
+    );
 
-  const checkboxChangeHandler = (isChecked) => {
-    if (isChecked) {
-      const filteredProducts = products.filter(
+    if (selectedFilters.includes("delivery")) {
+      filteredProducts = filteredProducts.filter(
         (product) => product.delivery === true
       );
-      setProducts(filteredProducts);
     }
-    return products;
+
+    if (selectedFilters.includes("expensive")) {
+      let expensiveProduct = [];
+      let maxPrice = 0;
+
+      for (let i = 0; i < products.length; i++) {
+        if (products[i].price > maxPrice) {
+          maxPrice = products[i].price;
+          expensiveProduct = [products[i]];
+        }
+      }
+      filteredProducts = expensiveProduct;
+    }
+
+    return filteredProducts;
+  };
+
+  const checkboxChangeHandler = (filter) => {
+    const isFilterSelected = selectedFilters.includes(filter);
+
+    if (isFilterSelected) {
+      setSelectedFilters(
+        selectedFilters.filter((selectedFilter) => selectedFilter !== filter)
+      );
+    } else {
+      setSelectedFilters([...selectedFilters, filter]);
+    }
   };
 
   const clearFilters = () => {
-    setProducts(productsData);
+    setSelectedFilters([]);
   };
 
   return (
@@ -40,6 +66,7 @@ export const ProductProvider = ({ children }) => {
         getDisplayProducts,
         checkboxChangeHandler,
         clearFilters,
+        selectedFilters,
       }}
     >
       {children}

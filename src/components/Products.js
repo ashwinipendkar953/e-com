@@ -19,22 +19,13 @@ const Products = ({ catId }) => {
       <Box>
         <Grid container spacing={2}>
           {displayProducts.map((product) => {
-            const {
-              id,
-              name,
-              thumbnail,
-              price,
-              currency,
-              inStock,
-              categoryId,
-            } = product;
+            const { id, name, thumbnail, price, inStock } = product;
             return (
               <Grid item xs={12} md={4} key={id}>
                 <Card>
                   <CardMedia
                     component="img"
                     alt={name}
-                    // sx={{ height: 200, margin: "auto" }}
                     sx={
                       catId === "fgsa2142fa"
                         ? { height: 200, margin: "auto" }
