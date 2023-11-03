@@ -84,18 +84,51 @@ export const ProductProvider = ({ children }) => {
   };
 
   const addToCartHandler = (cartProduct) => {
-    setCartItems([...cartItems, cartProduct]);
-    setPrice((prev) => {
-      return prev + cartProduct.price;
+    const existingItem = cartItems.find(
+      (cartItem) => cartItem.id === cartProduct.id
+    );
+
+    if (existingItem) {
+      setCartItems(
+        cartItems.map((cartItem) =>
+          cartItem.id === cartProduct.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        )
+      );
+    } else {
+      setCartItems([...cartItems, { ...cartProduct, quantity: 1 }]);
+    }
+
+    setPrice((prevPrice) => {
+      return prevPrice + cartProduct.price;
+    });
+
+    // localStorage.setItem(
+    //   "cartItems",
+    //   JSON.stringify([...cartItems, cartProduct])
+    // );
+    // localStorage.setItem(
+    //   "cartPrice",
+    //   JSON.stringify(price + cartProduct.price)
+    // );
+  };
+
+  const removeCartItem = (id) => {
+    const removeItem = cartItems.find((item) => item.id === id);
+    setCartItems(cartItems.filter((item) => item.id !== id));
+    setPrice((prevPrice) => {
+      return prevPrice - removeItem.price * removeItem.quantity;
     });
 
     localStorage.setItem(
       "cartItems",
-      JSON.stringify([...cartItems, cartProduct])
+      JSON.stringify(cartItems.filter((item) => item.id !== id))
     );
+
     localStorage.setItem(
       "cartPrice",
-      JSON.stringify(price + cartProduct.price)
+      JSON.stringify(price - removeItem.price * removeItem.quantity)
     );
   };
 
@@ -112,6 +145,7 @@ export const ProductProvider = ({ children }) => {
         setCartItems,
         addToCartHandler,
         price,
+        removeCartItem,
       }}
     >
       {children}

@@ -1,10 +1,13 @@
-import { Box, Card, Grid } from "@mui/material";
+import { Box, Button, Card, Grid } from "@mui/material";
 import React from "react";
 import { useProductContext } from "../context/ProductContext";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Checkout = () => {
-  const { cartItems } = useProductContext();
+  const { cartItems, removeCartItem } = useProductContext();
+
   return (
     <div className="container ">
       <h2>Checkout</h2>
@@ -24,7 +27,7 @@ const Checkout = () => {
             </Grid>
 
             {cartItems.map((item, index) => {
-              const { id, name, thumbnail, price, inStock } = item;
+              const { id, name, thumbnail, price, quantity } = item;
               return (
                 <CustomGrid key={index} container spacing={2}>
                   <Grid xs={2}>
@@ -34,13 +37,18 @@ const Checkout = () => {
                     <div>{name}</div>
                   </Grid>
                   <Grid xs={3}>
-                    <div>${price}</div>
+                    <div>${quantity * price}</div>
                   </Grid>
                   <Grid xs={2}>
-                    <div className="item-quantity">5</div>
+                    <div className="item-quantity">{quantity}</div>
                   </Grid>
                   <Grid xs={2}>
-                    <button className="button">X</button>
+                    <button
+                      className="button"
+                      onClick={() => removeCartItem(id)}
+                    >
+                      X
+                    </button>
                   </Grid>
                 </CustomGrid>
               );
@@ -48,6 +56,13 @@ const Checkout = () => {
           </StyledBox>
         </Card>
       </div>
+
+      <Link to="/">
+        <Button>
+          <ArrowBackIcon className="mr" />
+          continue shopping
+        </Button>
+      </Link>
     </div>
   );
 };
