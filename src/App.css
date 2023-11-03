@@ -43,6 +43,11 @@ body {
   padding-left: 50px;
 }
 
+.py-50 {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
 .center {
   width: 100%;
   margin: auto;
@@ -50,6 +55,10 @@ body {
 
 .text-center {
   text-align: center;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .flex-center {
