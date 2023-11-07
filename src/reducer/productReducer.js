@@ -34,13 +34,19 @@ const productReducer = (state, action) => {
 
     case "SET_SELECTED_FILTERS":
       const isFilterSelected = state.selectedFilters.includes(action.payload);
+      const productsAfterFiltered = state.featuredProducts;
+      console.log("productsAfterFiltered:", productsAfterFiltered);
+
+      console.log("isFilterSelected:", isFilterSelected);
 
       if (isFilterSelected) {
         const selectedFilter = state.selectedFilters.filter(
           (filter) => filter !== action.payload
         );
+        console.log("selectedFilter:", selectedFilter);
         return {
           ...state,
+          filteredProducts: productsAfterFiltered,
           selectedFilters: selectedFilter,
         };
       } else {
@@ -175,14 +181,10 @@ const productReducer = (state, action) => {
         categoryProducts = [bestSellingProduct];
       }
 
-      console.log("categoryProducts:", categoryProducts);
-
       return {
         ...state,
         filteredProducts: categoryProducts,
       };
-
-      console.log("filteredProducts:", filteredProducts);
 
     // eslint-disable-next-line no-fallthrough
     case "CLEAR_FILTERS":
