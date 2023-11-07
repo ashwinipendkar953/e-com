@@ -6,6 +6,7 @@ import { useProductContext } from "../context/ProductContext";
 
 const Nav = () => {
   const { cartItems, price } = useProductContext();
+
   return (
     <Navbar>
       <FlexContainer className="container">
@@ -19,6 +20,7 @@ const Nav = () => {
             <Button className="cartItems" color="secondary" variant="contained">
               {cartItems.length}
             </Button>
+
             <span className="total-price">${price}</span>
           </NavLink>
         </p>

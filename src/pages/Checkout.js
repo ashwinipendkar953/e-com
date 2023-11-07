@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Checkout = () => {
-  const { cartItems, removeCartItem } = useProductContext();
+  const { cartItems, removeCartItem, incrementHandler, decrementHandler } =
+    useProductContext();
 
   return (
     <div className="container ">
@@ -14,11 +15,11 @@ const Checkout = () => {
       <div className="flex-container ">
         <Card style={{ height: "100%" }}>
           <StyledBox className="py-50 px-50">
-            <Grid container spacing={2} className="header">
+            <Grid container spacing={2} xs={12} className="header">
               <Grid item xs={5} className="text-center">
                 <div>Name</div>
               </Grid>
-              <Grid item xs={3} className="text-left">
+              <Grid item xs={3}>
                 <div>Price</div>
               </Grid>
               <Grid item xs={4} className="text-left">
@@ -40,7 +41,21 @@ const Checkout = () => {
                     <div>${quantity * price}</div>
                   </Grid>
                   <Grid xs={2}>
-                    <div className="item-quantity">{quantity}</div>
+                    <div className="item-quantity">
+                      <span
+                        className="qtyBtn"
+                        onClick={() => incrementHandler(item)}
+                      >
+                        +
+                      </span>
+                      <span className="quantity">{quantity}</span>
+                      <span
+                        className="qtyBtn"
+                        onClick={() => decrementHandler(item)}
+                      >
+                        -
+                      </span>
+                    </div>
                   </Grid>
                   <Grid xs={2}>
                     <button
@@ -85,10 +100,19 @@ const CustomGrid = styled(Grid)`
     height: 50px;
   }
 
-  .item-quantity {
-    border-bottom: 1px solid #ccc;
-    width: 25px;
-    text-align: center;
+  .qtyBtn {
+    border: 1px solid #ccc;
+    padding: 2px 8px;
+  }
+
+  .qtyBtn:hover {
+    background-color: aliceblue;
+    font-weight: bold;
+  }
+
+  .quantity {
+    padding: 0 10px;
+    font-weight: bold;
   }
 
   .button {

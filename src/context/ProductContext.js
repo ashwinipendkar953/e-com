@@ -1,154 +1,86 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import reducer from "../reducer/productReducer";
+
 import productsData from "../assets/products.json";
 
-const ProductContext = createContext();
+const productContext = createContext();
 
-export const useProductContext = () => {
-  return useContext(ProductContext);
+const initialState = {
+  products: [],
+  featuredProducts: [],
+  filteredProducts: [],
+  selectedFilters: [],
+  cartItems: [],
+  price: 0,
 };
 
-export const ProductProvider = ({ children }) => {
-  const [products, setProducts] = useState(productsData);
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
-  const [price, setPrice] = useState(0);
+const ProductProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const getProductsByCategory = (catId) => {
+    dispatch({ type: "SET_PRODUCTS_BY_CATEGORY", payload: catId });
+  };
+
+  const addToCartHandler = (cartProduct) => {
+    dispatch({ type: "ADD_TO_CART", payload: cartProduct });
+  };
+
+  const applyFilters = (filters) => {
+    dispatch({ type: "SET_SELECTED_FILTERS", payload: filters });
+    dispatch({ type: "APPLY_FILTERS", payload: filters });
+  };
+
+  const clearFilters = () => {
+    dispatch({ type: "CLEAR_FILTERS" });
+    dispatch({ type: "RESET_PRODUCTS" });
+  };
 
   useEffect(() => {
-    setProducts(productsData);
+    dispatch({ type: "SET_PRODUCTS", payload: productsData });
 
     const storedCartItems = JSON.parse(localStorage.getItem("cartItems"));
     if (storedCartItems) {
-      setCartItems(storedCartItems);
+      dispatch({ type: "SET_CART_ITEMS", payload: storedCartItems });
     }
 
     const storedCartPrice = JSON.parse(localStorage.getItem("cartPrice"));
     if (storedCartPrice) {
-      setPrice(storedCartPrice);
+      dispatch({ type: "SET_CART_PRICE", payload: storedCartPrice });
     }
   }, []);
 
-  const getDisplayProducts = (catId) => {
-    let filteredProducts = products.filter(
-      (product) => product.categoryId === catId
-    );
-
-    if (selectedFilters.includes("delivery")) {
-      filteredProducts = filteredProducts.filter(
-        (product) => product.delivery === true
-      );
-    }
-
-    if (selectedFilters.includes("expensive")) {
-      let expensiveProduct = [];
-      let maxPrice = 0;
-
-      for (let i = 0; i < filteredProducts.length; i++) {
-        const product = filteredProducts[i];
-        if (product && product.price > maxPrice) {
-          maxPrice = product.price;
-          expensiveProduct = [product];
-        }
-      }
-      filteredProducts = expensiveProduct;
-    }
-
-    if (selectedFilters.includes("bestSelling")) {
-      let bestSellingProduct = null;
-      let highestUnitSold = 0;
-      filteredProducts.forEach((product) => {
-        if (product && product.unitsSold > highestUnitSold) {
-          bestSellingProduct = product;
-          highestUnitSold = product.unitsSold;
-        }
-      });
-      filteredProducts = [bestSellingProduct];
-    }
-
-    return filteredProducts;
+  const incrementHandler = (item) => {
+    dispatch({ type: "INCREMENT_QTY", payload: item });
   };
 
-  const checkboxChangeHandler = (filter) => {
-    const isFilterSelected = selectedFilters.includes(filter);
-
-    if (isFilterSelected) {
-      setSelectedFilters(
-        selectedFilters.filter((selectedFilter) => selectedFilter !== filter)
-      );
-    } else {
-      setSelectedFilters([...selectedFilters, filter]);
-    }
+  const decrementHandler = (item) => {
+    dispatch({ type: "DECREMENT_QTY", payload: item });
   };
 
-  const clearFilters = () => {
-    setSelectedFilters([]);
-  };
-
-  const addToCartHandler = (cartProduct) => {
-    const existingItem = cartItems.find(
-      (cartItem) => cartItem.id === cartProduct.id
-    );
-
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((cartItem) =>
-          cartItem.id === cartProduct.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...cartProduct, quantity: 1 }]);
-    }
-
-    setPrice((prevPrice) => {
-      return prevPrice + cartProduct.price;
-    });
-
-    // localStorage.setItem(
-    //   "cartItems",
-    //   JSON.stringify([...cartItems, cartProduct])
-    // );
-    // localStorage.setItem(
-    //   "cartPrice",
-    //   JSON.stringify(price + cartProduct.price)
-    // );
-  };
-
-  const removeCartItem = (id) => {
-    const removeItem = cartItems.find((item) => item.id === id);
-    setCartItems(cartItems.filter((item) => item.id !== id));
-    setPrice((prevPrice) => {
-      return prevPrice - removeItem.price * removeItem.quantity;
-    });
-
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(cartItems.filter((item) => item.id !== id))
-    );
-
-    localStorage.setItem(
-      "cartPrice",
-      JSON.stringify(price - removeItem.price * removeItem.quantity)
-    );
+  const removeCartItem = (productId) => {
+    dispatch({ type: "REMOVE_CART_ITEM", payload: productId });
   };
 
   return (
-    <ProductContext.Provider
+    <productContext.Provider
       value={{
-        products,
-        setProducts,
-        getDisplayProducts,
-        checkboxChangeHandler,
-        clearFilters,
-        selectedFilters,
-        cartItems,
-        setCartItems,
+        ...state,
+        getProductsByCategory,
         addToCartHandler,
-        price,
+        applyFilters,
+        clearFilters,
         removeCartItem,
+        incrementHandler,
+        decrementHandler,
       }}
     >
       {children}
-    </ProductContext.Provider>
+    </productContext.Provider>
   );
 };
+
+const useProductContext = () => {
+  return useContext(productContext);
+};
+
+export { ProductProvider, productContext, useProductContext };

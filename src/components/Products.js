@@ -8,10 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { useProductContext } from "../context/ProductContext";
+import { useEffect } from "react";
 
 const Products = ({ catId }) => {
-  const { getDisplayProducts, addToCartHandler } = useProductContext();
-  const displayProducts = getDisplayProducts(catId);
+  useEffect(() => {
+    getProductsByCategory(catId);
+  }, [catId]);
+
+  const { addToCartHandler, getProductsByCategory, filteredProducts } =
+    useProductContext();
+  const displayProducts = filteredProducts;
 
   return (
     <div className="container flex-container mt-30">

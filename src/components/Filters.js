@@ -3,8 +3,7 @@ import { useProductContext } from "../context/ProductContext";
 import { Button } from "@mui/material";
 
 const Filters = () => {
-  const { checkboxChangeHandler, clearFilters, selectedFilters } =
-    useProductContext();
+  const { applyFilters, clearFilters, selectedFilters } = useProductContext();
 
   return (
     <div>
@@ -16,7 +15,7 @@ const Filters = () => {
               type="checkbox"
               value="delivery"
               checked={selectedFilters.includes("delivery")}
-              onChange={() => checkboxChangeHandler("delivery")}
+              onChange={() => applyFilters("delivery")}
             />
             Delivery
           </label>
@@ -27,7 +26,7 @@ const Filters = () => {
               type="checkbox"
               value="expensive"
               checked={selectedFilters.includes("expensive")}
-              onChange={() => checkboxChangeHandler("expensive")}
+              onChange={() => applyFilters("expensive")}
             />
             Expensive
           </label>
@@ -38,7 +37,7 @@ const Filters = () => {
               type="checkbox"
               value="bestSelling"
               checked={selectedFilters.includes("bestSelling")}
-              onChange={() => checkboxChangeHandler("bestSelling")}
+              onChange={() => applyFilters("bestSelling")}
             />
             Best Selling
           </label>
