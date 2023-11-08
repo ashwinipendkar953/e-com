@@ -58,16 +58,22 @@ const productReducer = (state, action) => {
 
     case "ADD_TO_CART":
       const cartProduct = action.payload;
-      const existingItemIndex = state.cartItems.findIndex(
-        (cartItem) => cartItem.id === cartProduct.id
-      );
-
       const updatedCartItems = [...state.cartItems];
 
-      if (existingItemIndex !== -1) {
-        updatedCartItems[existingItemIndex].quantity += 1;
-      } else {
+      const existingItemIndex = updatedCartItems.findIndex(
+        (item) => item.name === cartProduct.name //
+      );
+
+      console.log("existingItemIndex:", existingItemIndex);
+
+      if (existingItemIndex < 0) {
         updatedCartItems.push({ ...cartProduct, quantity: 1 });
+      } else {
+        const updatedItem = {
+          ...updatedCartItems[existingItemIndex],
+        };
+        updatedItem.quantity++;
+        updatedCartItems[existingItemIndex] = updatedItem;
       }
 
       const updatedPrice = updatedCartItems.reduce(
